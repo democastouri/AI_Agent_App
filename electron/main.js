@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, dialog, shell } = require('electron')
+const { app, BrowserWindow, ipcMain, dialog, shell, Menu } = require('electron')
 const { autoUpdater } = require('electron-updater')
 const path = require('path')
 const log = require('electron-log')
@@ -154,6 +154,7 @@ ipcMain.on('open-external', (_, url) => {
 
 // ─── App lifecycle ────────────────────────────────────────────────────────────
 app.whenReady().then(() => {
+  Menu.setApplicationMenu(null)
   createMainWindow()
 
   app.on('activate', () => {
