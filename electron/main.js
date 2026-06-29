@@ -49,9 +49,11 @@ function createUpdateWindow(info) {
     width: 460,
     height: 280,
     resizable: false,
-    title: 'Update Available',
+    title: 'Update Required',
     parent: mainWindow,
     modal: true,
+    closable: false,      // Prevents the 'X' button
+    minimizable: false,   // Optional: prevents minimizing
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       contextIsolation: true,
@@ -59,16 +61,19 @@ function createUpdateWindow(info) {
     },
   })
 
+  // Prevent closing via Alt+F4 or other shortcuts
+  updateWindow.on('close', (e) => {
+    e.preventDefault();
+  });
+
   updateWindow.loadFile(path.join(__dirname, 'update.html'))
 
   updateWindow.webContents.once('did-finish-load', () => {
     updateWindow.webContents.send('update-info', {
       version: info.version,
-      releaseNotes: info.releaseNotes || 'Bug fixes and improvements.',
+      releaseNotes: info.releaseNotes || 'An update is required to continue.',
     })
   })
-
-  updateWindow.on('closed', () => { updateWindow = null })
 }
 
 // ─── Auto updater logic ──────────────────────────────────────────────────────

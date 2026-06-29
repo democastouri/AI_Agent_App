@@ -1,11 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Update Available</title>
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -111,8 +116,13 @@
       transition: opacity 0.15s;
     }
 
-    button:hover { opacity: 0.85; }
-    button:active { opacity: 0.7; }
+    button:hover {
+      opacity: 0.85;
+    }
+
+    button:active {
+      opacity: 0.7;
+    }
 
     .btn-primary {
       background: #4f46e5;
@@ -138,16 +148,41 @@
     }
 
     @media (prefers-color-scheme: dark) {
-      body { background: #1c1c1e; color: #f0f0f0; }
-      .icon { background: #2c2c54; }
-      h1 { color: #f0f0f0; }
-      .notes { background: #2a2a2e; color: #ccc; }
-      .btn-secondary { background: #3a3a3c; color: #e0e0e0; }
-      .progress-bar-bg { background: #3a3a3c; }
-      .version-badge { background: #2c2c54; color: #a5b4fc; }
+      body {
+        background: #1c1c1e;
+        color: #f0f0f0;
+      }
+
+      .icon {
+        background: #2c2c54;
+      }
+
+      h1 {
+        color: #f0f0f0;
+      }
+
+      .notes {
+        background: #2a2a2e;
+        color: #ccc;
+      }
+
+      .btn-secondary {
+        background: #3a3a3c;
+        color: #e0e0e0;
+      }
+
+      .progress-bar-bg {
+        background: #3a3a3c;
+      }
+
+      .version-badge {
+        background: #2c2c54;
+        color: #a5b4fc;
+      }
     }
   </style>
 </head>
+
 <body>
   <div class="card">
     <div class="icon">&#8593;</div>
@@ -164,7 +199,7 @@
     </div>
 
     <div class="actions">
-      <button class="btn-secondary" id="btn-skip" onclick="skip()">Skip</button>
+      <!-- <button class="btn-secondary" id="btn-skip" onclick="skip()">Skip</button> -->
       <button class="btn-primary" id="btn-download" onclick="download()">Download &amp; Install</button>
       <button class="btn-install" id="btn-install" onclick="install()">Restart &amp; Install</button>
     </div>
@@ -181,18 +216,21 @@
     window.electronAPI.onDownloadProgress((percent) => {
       document.getElementById('progress-wrap').style.display = 'block'
       document.getElementById('btn-download').style.display = 'none'
-      document.getElementById('btn-skip').disabled = true
+      // document.getElementById('btn-skip').disabled = true
       document.getElementById('percent').textContent = percent
       document.getElementById('progress-fill').style.width = percent + '%'
       document.getElementById('status').textContent = 'Downloading...'
     })
 
+    // Remove or ignore the skip function. 
+    // Ensure the update flow is linear:
     window.electronAPI.onUpdateDownloaded(() => {
-      document.getElementById('progress-wrap').style.display = 'none'
-      document.getElementById('btn-install').style.display = 'block'
-      document.getElementById('btn-skip').disabled = false
-      document.getElementById('status').textContent = 'Ready to install!'
-    })
+      document.getElementById('progress-wrap').style.display = 'none';
+      document.getElementById('btn-install').style.display = 'block';
+      // Keep the 'btn-download' hidden
+      document.getElementById('btn-download').style.display = 'none';
+      document.getElementById('status').textContent = 'Update ready. Please restart to install.';
+    });
 
     function download() {
       window.electronAPI.downloadUpdate()
@@ -206,9 +244,10 @@
       window.electronAPI.installUpdate()
     }
 
-    function skip() {
-      window.electronAPI.skipUpdate()
-    }
+    // function skip() {
+    //   window.electronAPI.skipUpdate()
+    // }
   </script>
 </body>
+
 </html>
