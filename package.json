@@ -1,6 +1,6 @@
 {
   "name": "AI-Agent-App",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Desktop app powered by Next.js on Vercel",
   "main": "electron/main.js",
   "scripts": {
