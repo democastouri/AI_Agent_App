@@ -78,6 +78,11 @@ function checkForUpdates() {
     log.error('Update check failed:', err)
   })
 }
+autoUpdater.on('update-available', (info) => {
+  log.info('Update found:', info); // Log the entire info object
+  log.info('Version found in metadata:', info.version);
+  createUpdateWindow(info);
+})
 
 autoUpdater.on('checking-for-update', () => {
   log.info('Checking for update...')
